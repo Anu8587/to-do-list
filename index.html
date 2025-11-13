@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taskboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* Base styles */
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--color-bg-dash);
+        transition: background-color 0.5s ease;
+      }
+
+      /* Princess Theme (Pastel Galaxy) */
+      .theme-princess {
+        --color-bg-dash: #FDFDFF;
+        --color-bg-sidebar: #E9E9F1;
+        --color-bg-card: #FDFDFF;
+        --color-text-primary: #343542;
+        --color-text-secondary: #6D6E78;
+        --color-border: #E9E9F1;
+        --color-primary: #E9D9FF;
+        --color-primary-hover: #DBC5FF;
+        --color-primary-text: #6D28D9;
+        --color-accent: #CFF8F3;
+        --color-accent-hover: #B8F2EA;
+        --color-accent-text: #047857;
+        --color-secondary: #D4E5FF;
+        --color-tertiary: #FFD4EA;
+        --color-glow: rgba(233, 217, 255, 0.7);
+      }
+      .dark.theme-princess {
+        --color-bg-dash: #1a1b26;
+        --color-bg-sidebar: #242533;
+        --color-bg-card: #242533;
+        --color-text-primary: #FDFDFF;
+        --color-text-secondary: #A6A8B3;
+        --color-border: #343542;
+        --color-glow: rgba(233, 217, 255, 0.5);
+      }
+      
+      /* Bunny Theme */
+      .theme-bunny {
+        --color-bg-dash: #FAF8F5; /* Creamy White */
+        --color-bg-sidebar: #EAE5DD; /* Light Beige */
+        --color-bg-card: #FFFFFF;
+        --color-text-primary: #4A443D; /* Earthy Brown */
+        --color-text-secondary: #8C8277; /* Muted Brown */
+        --color-border: #EAE5DD;
+        --color-primary: #D1E7DD; /* Soft Sage Green */
+        --color-primary-hover: #BFD9CE;
+        --color-primary-text: #2C5A4A; /* Forest Green */
+        --color-accent: #FFDAB9; /* Peach */
+        --color-accent-hover: #FFCC9E;
+        --color-accent-text: #C35214; /* Deep Orange */
+        --color-secondary: #F0E68C; /* Khaki */
+        --color-tertiary: #FFB6C1; /* Light Pink */
+        --color-glow: rgba(209, 231, 221, 0.8);
+      }
+      .dark.theme-bunny {
+        --color-bg-dash: #2D2A26;
+        --color-bg-sidebar: #3A3531;
+        --color-bg-card: #3A3531;
+        --color-text-primary: #FAF8F5;
+        --color-text-secondary: #B8B0A7;
+        --color-border: #4A443D;
+        --color-glow: rgba(209, 231, 221, 0.6);
+      }
+
+      .animate-card-rise {
+        animation: cardRise 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      @keyframes cardRise {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-check-bloom {
+        animation: check-bloom 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+      }
+      @keyframes check-bloom {
+        0% {
+          transform: scale(0);
+        }
+        70% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+
+      .ripple {
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple 600ms linear;
+        background-color: var(--color-secondary);
+      }
+
+      .animate-heartbeat {
+        animation: heartbeat 2.5s ease-in-out infinite;
+      }
+      @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      
+      .animate-tilt-fade {
+        animation: tilt-and-fade-out 0.4s ease-in-out forwards;
+      }
+      @keyframes tilt-and-fade-out {
+        from {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+        }
+      }
+
+      @keyframes confetti-pop {
+        0% { transform: scale(0) translateY(0); opacity: 1; }
+        100% { transform: scale(1) translateY(-50px); opacity: 0; }
+      }
+      
+      .animate-pulse-fab {
+        animation: pulse-fab 3s ease-in-out infinite;
+      }
+      @keyframes pulse-fab {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 var(--color-glow); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(233, 217, 255, 0); }
+      }
+      
+      .animate-number-pop {
+        animation: number-pop 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
+      @keyframes number-pop {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.4.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
